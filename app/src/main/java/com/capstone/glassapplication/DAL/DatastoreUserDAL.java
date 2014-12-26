@@ -17,10 +17,10 @@ import java.io.IOException;
 public class DatastoreUserDAL implements UserDAL {
     @Override
     public User getUser(String name) {
-        //TODO: get user from datastore
         UserApi.Builder userApiBuilder = new UserApi.Builder(
                 AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
 
+        userApiBuilder.setRootUrl("http://localhost:8080/_ah/api");
         UserApi userApi = userApiBuilder.build();
         try {
             User user = userApi.get(name).execute();
@@ -35,11 +35,10 @@ public class DatastoreUserDAL implements UserDAL {
 
     @Override
     public User updateUser(String name, User user) {
-        //TODO: update user to datastore
-
         UserApi.Builder userApiBuilder = new UserApi.Builder(
                 AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
 
+        userApiBuilder.setRootUrl("http://localhost:8080/_ah/api");
         UserApi userApi = userApiBuilder.build();
         try {
             User userResponse = userApi.update(name, user).execute();
