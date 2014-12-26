@@ -4,5 +4,7 @@
     <string name="app_name">GlassApplication</string>
     <string name="title_activity_main">Hello World Immersion</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_choose_world">ChooseWorld</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

@@ -14,8 +14,8 @@ import java.io.IOException;
 /**
  * Created by DasCruel on 12/25/2014.
  */
-public class DatastoreUserDAL implements UserDAL {
-    @Override
+public class DatastoreUserDAL{
+
     public User getUser(String name) {
         UserApi.Builder userApiBuilder = new UserApi.Builder(
                 AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
@@ -33,7 +33,6 @@ public class DatastoreUserDAL implements UserDAL {
         return null;
     }
 
-    @Override
     public User updateUser(String name, User user) {
         UserApi.Builder userApiBuilder = new UserApi.Builder(
                 AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);

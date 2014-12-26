@@ -16,8 +16,7 @@ import java.util.List;
 /**
  * Created by DasCruel on 12/25/2014.
  */
-public class DatastoreWorldDAL implements WorldDAL {
-    @Override
+public class DatastoreWorldDAL{
     public World getWorld(String name) {
         WorldApi.Builder builder = new WorldApi.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
 
@@ -32,7 +31,6 @@ public class DatastoreWorldDAL implements WorldDAL {
         return null;
     }
 
-    @Override
     public List<String> getListOfWorlds() {
         WorldApi.Builder builder = new WorldApi.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
         List<String> worldNames = new ArrayList<String>();

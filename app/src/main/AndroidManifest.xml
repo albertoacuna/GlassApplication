@@ -27,6 +27,11 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name=".ChooseWorldActivity"
+            android:label="@string/title_activity_choose_world" >
+        </activity>
     </application>
 
 </manifest>
