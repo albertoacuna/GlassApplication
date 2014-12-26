@@ -51,19 +51,19 @@ public class UserEndpoint {
     /**
      * Returns the {@link User} with the corresponding ID.
      *
-     * @param id the ID of the entity to be retrieved
+     * @param Name the ID of the entity to be retrieved
      * @return the entity with the corresponding ID
      * @throws NotFoundException if there is no {@code User} with the provided ID.
      */
     @ApiMethod(
             name = "get",
-            path = "user/{id}",
+            path = "user/{Name}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public User get(@Named("id") long id) throws NotFoundException {
-        logger.info("Getting User with ID: " + id);
-        User user = ofy().load().type(User.class).id(id).now();
+    public User get(@Named("Name") String Name) throws NotFoundException {
+        logger.info("Getting User with ID: " + Name);
+        User user = ofy().load().type(User.class).id(Name).now();
         if (user == null) {
-            throw new NotFoundException("Could not find User with ID: " + id);
+            throw new NotFoundException("Could not find User with ID: " + Name);
         }
         return user;
     }
@@ -77,7 +77,7 @@ public class UserEndpoint {
             httpMethod = ApiMethod.HttpMethod.POST)
     public User insert(User user) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
-        // You should validate that user.id has not been set. If the ID type is not supported by the
+        // You should validate that user.Name has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
@@ -90,19 +90,19 @@ public class UserEndpoint {
     /**
      * Updates an existing {@code User}.
      *
-     * @param id   the ID of the entity to be updated
+     * @param Name the ID of the entity to be updated
      * @param user the desired state of the entity
      * @return the updated version of the entity
-     * @throws NotFoundException if the {@code id} does not correspond to an existing
+     * @throws NotFoundException if the {@code Name} does not correspond to an existing
      *                           {@code User}
      */
     @ApiMethod(
             name = "update",
-            path = "user/{id}",
+            path = "user/{Name}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public User update(@Named("id") long id, User user) throws NotFoundException {
+    public User update(@Named("Name") String Name, User user) throws NotFoundException {
         // TODO: You should validate your ID parameter against your resource's ID here.
-        checkExists(id);
+        checkExists(Name);
         ofy().save().entity(user).now();
         logger.info("Updated User: " + user);
         return ofy().load().entity(user).now();
@@ -111,18 +111,18 @@ public class UserEndpoint {
     /**
      * Deletes the specified {@code User}.
      *
-     * @param id the ID of the entity to delete
-     * @throws NotFoundException if the {@code id} does not correspond to an existing
+     * @param Name the ID of the entity to delete
+     * @throws NotFoundException if the {@code Name} does not correspond to an existing
      *                           {@code User}
      */
     @ApiMethod(
             name = "remove",
-            path = "user/{id}",
+            path = "user/{Name}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") long id) throws NotFoundException {
-        checkExists(id);
-        ofy().delete().type(User.class).id(id).now();
-        logger.info("Deleted User with ID: " + id);
+    public void remove(@Named("Name") String Name) throws NotFoundException {
+        checkExists(Name);
+        ofy().delete().type(User.class).id(Name).now();
+        logger.info("Deleted User with ID: " + Name);
     }
 
     /**
@@ -150,11 +150,11 @@ public class UserEndpoint {
         return CollectionResponse.<User>builder().setItems(userList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
-    private void checkExists(long id) throws NotFoundException {
+    private void checkExists(String Name) throws NotFoundException {
         try {
-            ofy().load().type(User.class).id(id).safe();
+            ofy().load().type(User.class).id(Name).safe();
         } catch (com.googlecode.objectify.NotFoundException e) {
-            throw new NotFoundException("Could not find User with ID: " + id);
+            throw new NotFoundException("Could not find User with ID: " + Name);
         }
     }
 }

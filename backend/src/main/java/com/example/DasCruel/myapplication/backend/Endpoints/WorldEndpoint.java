@@ -51,19 +51,19 @@ public class WorldEndpoint {
     /**
      * Returns the {@link World} with the corresponding ID.
      *
-     * @param Id the ID of the entity to be retrieved
+     * @param Name the ID of the entity to be retrieved
      * @return the entity with the corresponding ID
      * @throws NotFoundException if there is no {@code World} with the provided ID.
      */
     @ApiMethod(
             name = "get",
-            path = "world/{Id}",
+            path = "world/{Name}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public World get(@Named("Id") long Id) throws NotFoundException {
-        logger.info("Getting World with ID: " + Id);
-        World world = ofy().load().type(World.class).id(Id).now();
+    public World get(@Named("Name") String Name) throws NotFoundException {
+        logger.info("Getting World with ID: " + Name);
+        World world = ofy().load().type(World.class).id(Name).now();
         if (world == null) {
-            throw new NotFoundException("Could not find World with ID: " + Id);
+            throw new NotFoundException("Could not find World with ID: " + Name);
         }
         return world;
     }
@@ -77,7 +77,7 @@ public class WorldEndpoint {
             httpMethod = ApiMethod.HttpMethod.POST)
     public World insert(World world) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
-        // You should validate that world.Id has not been set. If the ID type is not supported by the
+        // You should validate that world.Name has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
@@ -90,19 +90,19 @@ public class WorldEndpoint {
     /**
      * Updates an existing {@code World}.
      *
-     * @param worldId    the ID of the entity to be updated
+     * @param Name  the ID of the entity to be updated
      * @param world the desired state of the entity
      * @return the updated version of the entity
-     * @throws NotFoundException if the {@code Id} does not correspond to an existing
+     * @throws NotFoundException if the {@code Name} does not correspond to an existing
      *                           {@code World}
      */
     @ApiMethod(
             name = "update",
-            path = "world/{Id}",
+            path = "world/{Name}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public World update(@Named("worldId") long worldId, World world) throws NotFoundException {
+    public World update(@Named("Name") String Name, World world) throws NotFoundException {
         // TODO: You should validate your ID parameter against your resource's ID here.
-        checkExists(worldId);
+        checkExists(Name);
         ofy().save().entity(world).now();
         logger.info("Updated World: " + world);
         return ofy().load().entity(world).now();
@@ -111,18 +111,18 @@ public class WorldEndpoint {
     /**
      * Deletes the specified {@code World}.
      *
-     * @param Id the ID of the entity to delete
-     * @throws NotFoundException if the {@code Id} does not correspond to an existing
+     * @param Name the ID of the entity to delete
+     * @throws NotFoundException if the {@code Name} does not correspond to an existing
      *                           {@code World}
      */
     @ApiMethod(
             name = "remove",
-            path = "world/{Id}",
+            path = "world/{Name}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("Id") long Id) throws NotFoundException {
-        checkExists(Id);
-        ofy().delete().type(World.class).id(Id).now();
-        logger.info("Deleted World with ID: " + Id);
+    public void remove(@Named("Name") String Name) throws NotFoundException {
+        checkExists(Name);
+        ofy().delete().type(World.class).id(Name).now();
+        logger.info("Deleted World with ID: " + Name);
     }
 
     /**
@@ -150,11 +150,11 @@ public class WorldEndpoint {
         return CollectionResponse.<World>builder().setItems(worldList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
-    private void checkExists(long Id) throws NotFoundException {
+    private void checkExists(String Name) throws NotFoundException {
         try {
-            ofy().load().type(World.class).id(Id).safe();
+            ofy().load().type(World.class).id(Name).safe();
         } catch (com.googlecode.objectify.NotFoundException e) {
-            throw new NotFoundException("Could not find World with ID: " + Id);
+            throw new NotFoundException("Could not find World with ID: " + Name);
         }
     }
 }

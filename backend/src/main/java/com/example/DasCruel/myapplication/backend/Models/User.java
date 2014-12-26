@@ -13,7 +13,6 @@ import lombok.Setter;
  */
 @Entity
 public class User {
-    @Id @Getter @Setter private long id;
-    @Getter @Setter private String Name;
+    @Id @Getter @Setter private String Name;
     @Getter @Setter private List<World> SavedWorlds;
 }

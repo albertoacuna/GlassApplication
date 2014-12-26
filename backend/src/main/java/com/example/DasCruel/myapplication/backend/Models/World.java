@@ -14,8 +14,7 @@ import lombok.Setter;
 
 @Entity
 public class World {
-    @Id @Getter @Setter private long Id;
-    @Getter @Setter private String Name;
+    @Id @Getter @Setter private String Name;
     @Getter @Setter private String Description;
     @Getter @Setter private List<Location> Locations;
 }

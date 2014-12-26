@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface UserDAL {
     public User getUser(String name);
-    public void updateUser(User user);
+    public User updateUser(String name, User user);
 }
